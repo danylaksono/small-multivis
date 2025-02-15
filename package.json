@@ -1,0 +1,21 @@
+{
+  "name": "small-multivis",
+  "version": "1.0.0",
+  "description": "An experiment for duckdb for small multiples",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest"
+  },
+  "keywords": [
+    "rollup",
+    "library",
+    "javascript"
+  ],
+  "author": "Dany Laksono",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^2.0.0",
+    "jest": "^26.0.0"
+  }
+}
