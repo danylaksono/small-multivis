@@ -1,5 +1,21 @@
 import * as d3 from "d3";
 import _ from "lodash";
+import * as duckdb from "@duckdb/duckdb-wasm";
+import duckdb_wasm from "@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm";
+import mvp_worker from "@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js";
+import duckdb_wasm_eh from "@duckdb/duckdb-wasm/dist/duckdb-eh.wasm";
+import eh_worker from "@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js";
+
+const MANUAL_BUNDLES = {
+  mvp: {
+    mainModule: duckdb_wasm,
+    mainWorker: mvp_worker,
+  },
+  eh: {
+    mainModule: duckdb_wasm_eh,
+    mainWorker: eh_worker,
+  },
+};
 
 export class Histogram {
   constructor(config) {
@@ -235,53 +251,22 @@ export class Histogram {
     return this;
   }
 
-  // async setupDuckDB() {
-  //   try {
-  //     // Import DuckDB only when needed
-  //     const duckdb = await import("npm:@duckdb/duckdb-wasm");
-  //     const JSDELIVR_BUNDLES = await duckdb.getJsDelivrBundles();
-  //     const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
-  //     const worker = new Worker(bundle.mainWorker);
-  //     const logger = new duckdb.ConsoleLogger();
-
-  //     this.duckdb = new duckdb.AsyncDuckDB(logger, worker);
-  //     await this.duckdb.instantiate(bundle.mainModule);
-  //     this.conn = await this.duckdb.connect();
-  //   } catch (error) {
-  //     throw new Error(`Failed to initialize DuckDB: ${error.message}`);
-  //   }
-  // }
-
   async setupDuckDB() {
     try {
-      // Import DuckDB only when needed
       const duckdb = await import("@duckdb/duckdb-wasm");
-
-      // Define the bundles for DuckDB
-      const bundle = await duckdb.selectBundle({
-        mvp: {
-          mainModule: import.meta.resolve(
-            "@duckdb/duckdb-wasm@1.28.1-dev287.0/dist/duckdb-mvp.wasm"
-          ),
-          mainWorker: import.meta.resolve(
-            "@duckdb/duckdb-wasm@1.28.1-dev287.0/dist/duckdb-browser-mvp.worker.js"
-          ),
-        },
-        eh: {
-          mainModule: import.meta.resolve(
-            "@duckdb/duckdb-wasm@1.28.1-dev287.0/dist/duckdb-eh.wasm"
-          ),
-          mainWorker: import.meta.resolve(
-            "@duckdb/duckdb-wasm@1.28.1-dev287.0/dist/duckdb-browser-eh.worker.js"
-          ),
-        },
-      });
-
       const logger = new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING);
-      const worker = new Worker(bundle.mainWorker);
+
+      // Construct worker URL relative to the current module
+      const workerURL = new URL(
+        "@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js",
+        import.meta.url
+      );
+
+      const worker = new Worker(workerURL.toString());
 
       this.duckdb = new duckdb.AsyncDuckDB(logger, worker);
-      await this.duckdb.instantiate(bundle.mainModule);
+      await this.duckdb.instantiate(duckdb_wasm);
+
       this.conn = await this.duckdb.connect();
     } catch (error) {
       throw new Error(`Failed to initialize DuckDB: ${error.message}`);

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Census Data Histogram Example</title>
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .histogram-tooltip {
+        position: absolute;
+        background: white;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Census Data Visualization</h1>
+      <div id="histogram"></div>
+    </div>
+
+    <!-- Import dependencies -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/d3@7"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/lodash@4"></script> -->
+    <!-- <script type="module">
+      import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7?module";
+      window.d3 = d3;
+    </script> -->
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

@@ -1,26 +1,49 @@
 {
   "name": "small-multivis",
-  "version": "1.0.0",
-  "description": "An experiment for duckdb for small multiples",
-  "main": "src/index.js",
+  "version": "0.1.0",
+  "description": "Small visualization library with DuckDB integration",
+  "type": "module",
+  "main": "dist/small-multivis.js",
+  "module": "dist/small-multivis.js",
+  "exports": {
+    ".": {
+      "import": "./dist/small-multivis.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "rollup -c",
-    "test": "jest"
+    "dev": "rollup -c -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "rollup",
-    "library",
-    "javascript"
+    "visualization",
+    "d3",
+    "duckdb",
+    "histogram"
   ],
   "author": "Dany Laksono",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^26.0.0",
-    "rollup": "^2.0.0"
-  },
-  "dependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "@duckdb/duckdb-wasm": "^1.29.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-url": "^8.0.2",
     "d3": "^7.9.0",
-    "duckdb": "^1.2.0",
-    "lodash": "^4.17.21"
-  }
+    "lodash": "^4.17.21",
+    "rollup": "^4.9.6",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^3.0.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "> 0.2%"
+  ]
 }
